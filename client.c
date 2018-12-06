@@ -32,8 +32,7 @@ int main(int argc, char **argv) /*"named pipe" client.c*/
 		perror (msg.privfifo);
 		exit (3);
 	}
-	
-    while((n = read(fdpriv, line, 100)) > 0){
+    
     char* echo_f = "echo ";
     char* sed_f1 = "| sed 's/^[ \t]*//'";
     char* sed_f2 = "| rev";
@@ -43,25 +42,24 @@ int main(int argc, char **argv) /*"named pipe" client.c*/
 	/*5. */ 
 	while((n = read(fdpriv, line, 10000)) > 0){
     char* buff = calloc(1000, 1);
-    for (int i =0; i < strlen(line); i++){
-    	if(line[i] == '\n'){
-    		char* buff2 = calloc(1000, 1);
-    		strcat(buff2, echo_f);
-    		strcat(buff2, buff);
-    		strcat(buff2, sed_f1);
-    		strcat(buff2, sed_f2);
-    		system(buff2);
-    		free(buff);
-    		free(buff2);
-    		char* buff = calloc(1000, 1);
-    	} else {
-    		cToStr[0] = line[i];
-    		strcat(buff, cToStr);
-    	}
-    }
- 
-	}
-	}
+		for (int i =0; i < strlen(line); i++){
+			if(line[i] == '\n'){
+				char* buff2 = calloc(1000, 1);
+				strcat(buff2, echo_f);
+				strcat(buff2, buff);
+				strcat(buff2, sed_f1);
+				strcat(buff2, sed_f2);
+				system(buff2);
+				free(buff);
+				free(buff2);
+				char* buff = calloc(1000, 1);
+			} 
+			else {
+				cToStr[0] = line[i];
+				strcat(buff, cToStr);
+			}
+		}
+  	}
 
 	/*личный именованный канал закрывается и удаляется из текущего каталога */
 	close (fdpriv);
