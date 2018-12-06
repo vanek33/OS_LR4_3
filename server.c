@@ -37,22 +37,21 @@ int main(int argc, char **argv)
 			}
 
 			/*данные из файла копируются в личный именованный канал */
-			/*3. */ while((n = read(fd, line, LINESIZE)) > 0){
-/*4. */
+			while((n = read(fd, line, LINESIZE)) > 0){
 				int j=0, len=0;
-	    	for (j = 0; j < strlen(line); j++){
-			if (line[j] == 57)
-				line[j] = 48;
-			else if (isdigit(line[j])){
-				line[j]= line[j] + 1;
+				for (j = 0; j < strlen(line); j++){
+					if (line[j] == 57)
+						line[j] = 48;
+					else if (isdigit(line[j])){
+						line[j]= line[j] + 1;
+					}
+				}
+				write(fdpriv, line, n);
 			}
-		}
-		/*5. */ write(fdpriv, line, n);
-		}
-		/* Когда копирование закончено, требуемый файл и 
-		личный именованный канал закрывается */
-		close (fd);
-		close (fdpriv);
+			/* Когда копирование закончено, требуемый файл и 
+			личный именованный канал закрывается */
+			close (fd);
+			close (fdpriv);
 		}		
 		/* end of first while() */
 		/* Закрыть общедоступный канал. Сервер переходит 
