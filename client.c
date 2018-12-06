@@ -33,8 +33,8 @@ int main(int argc, char **argv) /*"named pipe" client.c*/
 		exit (3);
 	}
     
-    char* echo_f = "echo ";
-    char* sed_f1 = "| sed 's/^[ \t]*//'";
+    char* echo_f = "echo ";	
+    char* sed_f1 = "| sed 's/4/ch/g'";
     char* sed_f2 = "| rev";
     char cToStr[2];
     cToStr[1] = '\0';
