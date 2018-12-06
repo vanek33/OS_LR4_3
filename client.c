@@ -32,34 +32,6 @@ int main(int argc, char **argv) /*"named pipe" client.c*/
 		perror (msg.privfifo);
 		exit (3);
 	}
-    
-// 	/*распечатать данные, полученные из личного канала */
-// /*5. */ while((n = read(fdpriv, line, LINESIZE)) > 0){
-// // 6 Применяем фильтр
-// int i=0, j=0, len=0, l=0;
-// char str[300], *s = "";
-// //Поиск длины строки
-// while(l < n){
-// s=(line + l);
-// while(*s && *s!='\n'){
-// ++len;
-// *s++;
-// }
-// //Перевод длины строки в *char
-// char str2[3] = "";
-// snprintf(str2, 3, "%d", len);
-// //Объединение всех частей выходной строки
-// strcpy(str,""); //Обнуление строки
-// strcat(str, str2);
-// 	strcat(str, ":");
-// strncat(str, line+l, len+1);
-// //Вывод строки в поток вывода
-// l = l + len + 1;
-// write(1, str, len+4);
-// len = 0;
-// }
-	
-	
 	
     while((n = read(fdpriv, line, 100)) > 0){
     char* echo_f = "echo ";
@@ -87,19 +59,8 @@ int main(int argc, char **argv) /*"named pipe" client.c*/
     		strcat(buff, cToStr);
     	}
     }
-    //puts(buff);
-    /*char* buff = calloc(1000, 1);
-    strcat(buff, echo_f);
-    strcat(buff, line);
-    //strcat(buff, sed_f1);
-    //strcat(buff, sed_f2);
-    puts(line);
-    puts("end of string");
-    //system(buff);
-    free(buff);
-*/
-	
-
+ 
+	}
 	}
 
 	/*личный именованный канал закрывается и удаляется из текущего каталога */
