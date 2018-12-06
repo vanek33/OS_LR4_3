@@ -33,32 +33,60 @@ int main(int argc, char **argv) /*"named pipe" client.c*/
 		exit (3);
 	}
     
-    //while((n = read(fdpriv, line, 100)) > 0){
-    char* echo_f = "echo ";
-    char* sed_f1 = "| sed 's/^[ \t]*//'";
-    char* sed_f2 = "| rev";
-    char cToStr[2];
-    cToStr[1] = '\0';
 	/*распечатать данные, полученные из личного канала */
-	/*5. */ 
-	while((n = read(fdpriv, line, 10000)) > 0){
-    char* buff = calloc(20000, 1);
-    for (int i =0; i < strlen(line); i++){
-    	if(line[i] == '\n'){
-    		char* buff2 = calloc(1000, 1);
-    		strcat(buff2, echo_f);
-    		strcat(buff2, buff);
-    		strcat(buff2, sed_f1);
-    		strcat(buff2, sed_f2);
-    		system(buff2);
-    		free(buff);
-    		free(buff2);
-    		char* buff = calloc(1000, 1);
-    	} else {
-    		cToStr[0] = line[i];
-    		strcat(buff, cToStr);
-    	}
-    }
+/*5. */ while((n = read(fdpriv, line, LINESIZE)) > 0){
+// 6 Применяем фильтр
+int i=0, j=0, len=0, l=0;
+char str[300], *s = "";
+//Поиск длины строки
+while(l < n){
+s=(line + l);
+while(*s && *s!='\n'){
+++len;
+*s++;
+}
+//Перевод длины строки в *char
+char str2[3] = "";
+snprintf(str2, 3, "%d", len);
+//Объединение всех частей выходной строки
+strcpy(str,""); //Обнуление строки
+strcat(str, str2);
+	strcat(str, ":");
+strncat(str, line+l, len+1);
+//Вывод строки в поток вывода
+l = l + len + 1;
+write(1, str, len+4);
+len = 0;
+}
+	
+	
+	
+//     while((n = read(fdpriv, line, 100)) > 0){
+//     char* echo_f = "echo ";
+//     char* sed_f1 = "| sed 's/^[ \t]*//'";
+//     char* sed_f2 = "| rev";
+//     char cToStr[2];
+//     cToStr[1] = '\0';
+// 	/*распечатать данные, полученные из личного канала */
+// 	/*5. */ 
+// 	while((n = read(fdpriv, line, 10000)) > 0){
+//     char* buff = calloc(20000, 1);
+//     for (int i =0; i < strlen(line); i++){
+//     	if(line[i] == '\n'){
+//     		char* buff2 = calloc(1000, 1);
+//     		strcat(buff2, echo_f);
+//     		strcat(buff2, buff);
+//     		strcat(buff2, sed_f1);
+//     		strcat(buff2, sed_f2);
+//     		system(buff2);
+//     		free(buff);
+//     		free(buff2);
+//     		char* buff = calloc(1000, 1);
+//     	} else {
+//     		cToStr[0] = line[i];
+//     		strcat(buff, cToStr);
+//     	}
+//     }
     //puts(buff);
     /*char* buff = calloc(1000, 1);
     strcat(buff, echo_f);
