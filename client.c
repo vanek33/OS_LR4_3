@@ -11,9 +11,7 @@ int main(int argc, char **argv) /*"named pipe" client.c*/
 	
 	/* синтезировать имя личного программного канала и создать 
 	этот канал с правами чтения и записи для всех процессов*/
-	/*3. */
 	sprintf(msg.privfifo, "Fifo%d", getpid());
-	/*2. */
 	if (mkfifo(msg.privfifo, S_IFIFO|0666) == -1){ 
 		perror (msg.privfifo);
 		exit(1);
@@ -32,15 +30,13 @@ int main(int argc, char **argv) /*"named pipe" client.c*/
 		perror (msg.privfifo);
 		exit (3);
 	}
-    
-    char* echo_f = "echo ";	
-    char* sed_f1 = "| sed 's/4/ch/g'";   
-    char cToStr[2];
-    cToStr[1] = '\0';
+	char* echo_f = "echo ";	
+	char* sed_f1 = "| sed 's/4/ch/g'";   
+	char cToStr[2];
+	cToStr[1] = '\0';
 	/*распечатать данные, полученные из личного канала */
-	/*5. */ 
 	while((n = read(fdpriv, line, 10000)) > 0){
-    char* buff = calloc(1000, 1);
+		char* buff = calloc(1000, 1);
 		for (int i =0; i < strlen(line); i++){
 			if(line[i] == '\n'){
 				char* buff2 = calloc(1000, 1);
