@@ -34,8 +34,7 @@ int main(int argc, char **argv) /*"named pipe" client.c*/
 	}
     
     char* echo_f = "echo ";	
-    char* sed_f1 = "| sed 's/4/ch/g'";
-    char* sed_f2 = "| rev";
+    char* sed_f1 = "| sed 's/4/ch/g'";   
     char cToStr[2];
     cToStr[1] = '\0';
 	/*распечатать данные, полученные из личного канала */
@@ -48,7 +47,6 @@ int main(int argc, char **argv) /*"named pipe" client.c*/
 				strcat(buff2, echo_f);
 				strcat(buff2, buff);
 				strcat(buff2, sed_f1);
-				strcat(buff2, sed_f2);
 				system(buff2);
 				free(buff);
 				free(buff2);
