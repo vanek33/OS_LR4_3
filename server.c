@@ -40,15 +40,19 @@ int main(int argc, char **argv)
 			/*3. */ while((n = read(fd, line, LINESIZE)) > 0){
 /*4. */
 				int j=0, len=0;
-	    	for (j = 0; j < strlen(line); j++)
-	      	if (islower(line[j]))
-	        	line[j]= line[j] - 32;
-				/*5. */ write(fdpriv, line, n);
+	    	for (j = 0; j < strlen(line); j++){
+			if (line[j] == 57)
+				line[j] = 48;
+			else if (isdigit(line[j])){
+				line[j]= line[j] + 1;
 			}
-			/* Когда копирование закончено, требуемый файл и 
-			личный именованный канал закрывается */
-			close (fd);
-			close (fdpriv);
+		}
+		/*5. */ write(fdpriv, line, n);
+		}
+		/* Когда копирование закончено, требуемый файл и 
+		личный именованный канал закрывается */
+		close (fd);
+		close (fdpriv);
 		}		
 		/* end of first while() */
 		/* Закрыть общедоступный канал. Сервер переходит 
